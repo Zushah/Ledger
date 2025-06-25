@@ -12,7 +12,22 @@ https://www.github.com/Zushah/Ledger
         <link rel="stylesheet" href="./src/styles/style.css">
     </head>
     <body>
-        
+        <h1>Ledger</h1>
+        <form id="activity-form">
+            <input type="text" id="activity-name" placeholder="New Activity" required>
+            <button type="submit">Add Activity</button>
+        </form>
+        <div id="activities"></div>
+        <div id="entry-section" style="display:none;">
+            <h2 id="selected-activity"></h2>
+            <form id="entry-form">
+                <input type="date" id="date" required>
+                <input type="time" id="start-time" required>
+                <input type="time" id="end-time" required>
+                <button type="submit">Add Entry</button>
+            </form>
+            <ul id="entry-list"></ul>
+        </div>
         <script type="text/javascript" src="./src/scripts/main.js"></script>
     </body>
 </html>

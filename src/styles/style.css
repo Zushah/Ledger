@@ -1,3 +1,147 @@
+body {
+    background: #181818;
+    color: #f5e663;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+h1, h2 {
+    color: #ffe066;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+input, button, select {
+    font-family: inherit;
+    font-size: 1em;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+}
+
+input[type="text"], input[type="date"], input[type="time"] {
+    background: #232323;
+    color: #ffe066;
+    border: 1px solid #444;
+    padding: 7px 10px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus, input[type="date"]:focus, input[type="time"]:focus {
+    border: 1.5px solid #ffe066;
+}
+
+button {
+    background: linear-gradient(90deg, #ffe066 60%, #f5e663 100%);
+    color: #181818;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 224, 102, 0.08);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+button:hover, button:focus {
+    background: linear-gradient(90deg, #fff685 60%, #ffe066 100%);
+    color: #181818;
+    box-shadow: 0 4px 16px rgba(255, 224, 102, 0.16);
+}
+
+#activity-form {
+    margin-bottom: 18px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#activities {
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.activity-btn {
+    background: #232323;
+    color: #ffe066;
+    border: 1.5px solid #ffe066;
+    padding: 7px 14px;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.activity-btn:hover, .activity-btn:focus {
+    background: #ffe066;
+    color: #181818;
+    border: 1.5px solid #ffe066;
+}
+
+.delete-activity-btn {
+    background: #232323;
+    color: #ffb300;
+    border: 1.5px solid #444;
+    border-left: none;
+    padding: 7px 10px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background 0.2s, color 0.2s;
+}
+
+.delete-activity-btn:hover {
+    background: #ffb300;
+    color: #181818;
+}
+
+#entry-section {
+    background: #232323;
+    border-radius: 8px;
+    padding: 18px 18px 24px 18px;
+    box-shadow: 0 2px 16px rgba(255, 224, 102, 0.04);
+    margin-bottom: 32px;
+    max-width: 700px;
+}
+
+#entry-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+#selected-activity {
+    margin-bottom: 10px;
+}
+
+#year-buttons {
+    margin: 10px 0;
+    display: flex;
+    gap: 6px;
+}
+
+.year-btn {
+    background: #232323;
+    color: #ffe066;
+    border: 1.5px solid #ffe066;
+    border-radius: 4px;
+    padding: 4px 14px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.year-btn.active, .year-btn:hover {
+    background: #ffe066;
+    color: #181818;
+}
+
 .calendar-grid {
     display: flex;
     flex-direction: row;
@@ -13,39 +157,42 @@
 .calendar-day {
     width: 18px;
     height: 18px;
-    background: #e0e0e0;
+    background: #444;
     border-radius: 3px;
     margin: 1px 0;
     box-sizing: border-box;
-    transition: background 0.2s;
+    transition: background 0.2s, box-shadow 0.2s;
+    border: 1px solid #232323;
+}
+
+.calendar-day:hover {
+    box-shadow: 0 0 0 2px #ffe066;
+    z-index: 2;
+}
+
+.calendar-day[style*="background: rgb(66, 135"] {
+    background: linear-gradient(135deg, #ffe066 60%, #ffb300 100%) !important;
+    color: #181818;
+    border: 1.5px solid #ffe066;
 }
 
 #calendar-tooltip {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    box-shadow: 0 2px 12px rgba(255, 224, 102, 0.18);
+    background: #232323;
+    color: #ffe066;
+    border: 1.5px solid #ffe066;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.98em;
+    pointer-events: none;
+    z-index: 10;
 }
 
 #calendar > div:first-child {
-    font-size: 0.9em;
-    color: #555;
+    font-size: 0.95em;
+    color: #ffe066;
     margin-bottom: 4px;
     margin-left: 20px;
     display: flex;
     flex-direction: row;
-}
-
-.year-btn {
-    margin-right: 6px;
-    padding: 2px 10px;
-    border: 1px solid #3498db;
-    background: #fff;
-    color: #3498db;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background 0.2s, color 0.2s;
-}
-
-.year-btn.active, .year-btn:hover {
-    background: #3498db;
-    color: #fff;
 }

@@ -5,21 +5,19 @@ const saveActivities = () => {
 const renderActivities = () => {
     elements.activitiesDiv.innerHTML = "";
     activities.forEach((activity, idx) => {
+        const container = document.createElement("div");
+        container.style.display = "flex";
         const btn = document.createElement("button");
+        btn.className = "activity-btn";
         btn.textContent = activity.name;
         btn.onclick = () => selectActivity(idx);
-        btn.className = "activity-btn";
-        const del = document.createElement("button");
-        del.textContent = "🗑️";
-        del.onclick = (e) => {
-            e.stopPropagation();
-            deleteActivity(idx);
-        };
-        del.className = "delete-activity-btn";
-        const wrapper = document.createElement("div");
-        wrapper.appendChild(btn);
-        wrapper.appendChild(del);
-        elements.activitiesDiv.appendChild(wrapper);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-activity-btn";
+        deleteBtn.innerHTML = "&times;";
+        deleteBtn.onclick = () => deleteActivity(idx);
+        container.appendChild(btn);
+        container.appendChild(deleteBtn);
+        elements.activitiesDiv.appendChild(container);
     });
 };
 
@@ -32,12 +30,16 @@ const selectActivity = (idx) => {
 };
 
 const deleteActivity = (idx) => {
-    activities.splice(idx, 1);
-    saveActivities();
-    renderActivities();
-    if (selectedActivity === idx) {
-        elements.entrySection.style.display = "none";
-        selectedActivity = null;
+    if (confirm(`Are you sure you want to delete "${activities[idx].name}"?`)) {
+        activities.splice(idx, 1);
+        saveActivities();
+        renderActivities();
+        if (selectedActivity === idx) {
+            elements.entrySection.style.display = "none";
+            selectedActivity = null;
+        } else if (selectedActivity > idx) {
+            selectedActivity--;
+        }
     }
 };
 
@@ -70,13 +72,13 @@ const handleEntryFormSubmit = (e) => {
 const getAllEntryYears = () => {
     if (selectedActivity === null) return [];
     const entries = activities[selectedActivity].entries;
-    if (entries.length === 0) return [];
-    const years = entries.map(e => Number(e.date.slice(0, 4)));
+    if (entries.length === 0) return [new Date().getFullYear()];
+    const years = [...new Set(entries.map(e => Number(e.date.slice(0, 4))))];
     const minYear = Math.min(...years);
     const maxYear = Math.max(...years);
     let allYears = [];
     for (let y = minYear; y <= maxYear; y++) allYears.push(y);
-    return allYears;
+    return allYears.sort((a, b) => b - a);
 };
 
 const renderYearButtons = () => {
@@ -84,15 +86,14 @@ const renderYearButtons = () => {
     if (selectedActivity === null) return;
     const years = getAllEntryYears();
     if (years.length === 0) return;
-    if (!selectedYear || !years.includes(selectedYear)) selectedYear = years[years.length - 1];
-    years.forEach(year => {
+    if (!selectedYear || !years.includes(selectedYear)) selectedYear = Math.max(...years);
+    years.forEach((year) => {
         const btn = document.createElement("button");
-        btn.textContent = year;
         btn.className = "year-btn";
         if (year === selectedYear) btn.classList.add("active");
+        btn.textContent = year;
         btn.onclick = () => {
             selectedYear = year;
-            renderYearButtons();
             renderEntries();
         };
         elements.yearButtonsDiv.appendChild(btn);
@@ -102,15 +103,12 @@ const renderYearButtons = () => {
 const renderEntries = () => {
     elements.calendar.innerHTML = "";
     renderYearButtons();
-    if (selectedActivity === null) return;
-    const entries = activities[selectedActivity].entries;
-    if (!selectedYear) return;
+    if (selectedActivity === null || selectedYear === null) return;
+    const entries = activities[selectedActivity].entries.filter(e => e.date.startsWith(selectedYear));
     const dateMap = {};
-    entries.forEach(entry => {
-        if (entry.date.startsWith(selectedYear + "-")) {
-            if (!dateMap[entry.date]) dateMap[entry.date] = [];
-            dateMap[entry.date].push(entry);
-        }
+    entries.forEach((entry) => {
+        if (!dateMap[entry.date]) dateMap[entry.date] = [];
+        dateMap[entry.date].push(entry);
     });
     const startDate = new Date(selectedYear, 0, 1);
     const endDate = new Date(selectedYear, 11, 31);
@@ -130,72 +128,49 @@ const renderEntries = () => {
     }
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const calendarContainer = document.createElement("div");
-    calendarContainer.style.display = "flex";
-    calendarContainer.style.flexDirection = "row";
-    calendarContainer.style.alignItems = "flex-start";
-    const weekdayLabelsDiv = document.createElement("div");
-    weekdayLabelsDiv.className = "calendar-week";
-    weekdayLabelsDiv.style.marginRight = "5px";
-    weekdayLabelsDiv.style.paddingTop = "16px";
-    const weekdays = ["", "Mon", "", "Wed", "", "Fri", ""];
-    for (let i = 0; i < 7; i++) {
-        const labelDiv = document.createElement("div");
-        labelDiv.style.height = "18px";
-        labelDiv.style.width = "25px";
-        labelDiv.style.fontSize = "0.8em";
-        labelDiv.style.color = "#555";
-        labelDiv.style.lineHeight = "18px";
-        labelDiv.style.margin = "1px 0";
-        labelDiv.textContent = weekdays[i];
-        weekdayLabelsDiv.appendChild(labelDiv);
-    }
-    calendarContainer.appendChild(weekdayLabelsDiv);
-    const mainGridContainer = document.createElement("div");
+    calendarContainer.className = "calendar-container";
     const monthRow = document.createElement("div");
-    monthRow.style.display = "flex";
-    monthRow.style.flexDirection = "row";
-    monthRow.style.gap = "2px";
-    let monthForWeek = [];
-    let lastMonth = null;
-    weeks.forEach(week => {
-        let label = "";
-        for (let d = 0; d < 7; d++) {
-            const day = week[d];
-            if (day.getFullYear() === selectedYear) {
-                const month = day.getMonth();
-                if (month !== lastMonth) {
-                    label = months[month];
-                    lastMonth = month;
-                }
-                break;
+    monthRow.className = "calendar-months";
+    const monthPositions = {};
+    weeks.forEach((week, weekIndex) => {
+        const firstDayOfMonth = week.find((day) => day.getDate() === 1);
+        if (firstDayOfMonth) {
+            const month = firstDayOfMonth.getMonth();
+            if (monthPositions[month] === undefined) {
+                monthPositions[month] = weekIndex;
             }
         }
-        monthForWeek.push(label);
     });
-    let seen = {};
-    monthForWeek.forEach(label => {
-        const span = document.createElement("div");
-        span.style.width = "18px";
-        span.style.height = "16px";
-        span.style.fontSize = "0.9em";
-        span.style.textAlign = "left";
-        span.style.flex = "none";
-        if (label && !seen[label]) {
-            span.textContent = label;
-            seen[label] = true;
-        } else {
-            span.textContent = "";
+    months.forEach((monthName, monthIndex) => {
+        if (monthPositions[monthIndex] !== undefined) {
+            const monthLabel = document.createElement("div");
+            monthLabel.className = "calendar-month-label";
+            monthLabel.textContent = monthName;
+            monthLabel.style.gridColumnStart = monthPositions[monthIndex] + 1;
+            monthRow.appendChild(monthLabel);
         }
-        monthRow.appendChild(span);
     });
-    mainGridContainer.appendChild(monthRow);
+    calendarContainer.appendChild(monthRow);
+    const calendarGridArea = document.createElement("div");
+    calendarGridArea.className = "calendar-grid-area";
+    const weekdayLabelsDiv = document.createElement("div");
+    weekdayLabelsDiv.className = "calendar-weekdays";
+    const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    weekdays.forEach((day, i) => {
+        const labelDiv = document.createElement("div");
+        labelDiv.className = "calendar-weekday-label";
+        if ([1, 3, 5].includes(i)) {
+            labelDiv.textContent = day;
+        }
+        weekdayLabelsDiv.appendChild(labelDiv);
+    });
+    calendarGridArea.appendChild(weekdayLabelsDiv);
     const grid = document.createElement("div");
     grid.className = "calendar-grid";
-    grid.style.flexDirection = "row";
-    weeks.forEach(weekArr => {
+    weeks.forEach((weekArr) => {
         const weekDiv = document.createElement("div");
         weekDiv.className = "calendar-week";
-        weekArr.forEach(day => {
+        weekArr.forEach((day) => {
             const dayDiv = document.createElement("div");
             dayDiv.className = "calendar-day";
             if (day.getFullYear() === selectedYear) {
@@ -209,8 +184,7 @@ const renderEntries = () => {
                     dayDiv.style.background = `rgb(66, 135, ${blue})`;
                     dayDiv.style.cursor = "pointer";
                     dayDiv.onmouseenter = (evt) => {
-                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` +
-                            dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hrs)`).join("<br>");
+                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` + dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hrs)`).join("<br>");
                         elements.tooltip.style.display = "block";
                         elements.tooltip.style.left = (evt.pageX + 10) + "px";
                         elements.tooltip.style.top = (evt.pageY - 10) + "px";
@@ -225,7 +199,7 @@ const renderEntries = () => {
                     dayDiv.oncontextmenu = (evt) => {
                         evt.preventDefault();
                         if (confirm(`Delete all entries for ${dateStr}?`)) {
-                            activities[selectedActivity].entries = activities[selectedActivity].entries.filter(e => e.date !== dateStr);
+                            activities[selectedActivity].entries = activities[selectedActivity].entries.filter((e) => e.date !== dateStr);
                             saveActivities();
                             renderEntries();
                         }
@@ -238,8 +212,8 @@ const renderEntries = () => {
         });
         grid.appendChild(weekDiv);
     });
-    mainGridContainer.appendChild(grid);
-    calendarContainer.appendChild(mainGridContainer);
+    calendarGridArea.appendChild(grid);
+    calendarContainer.appendChild(calendarGridArea);
     elements.calendar.appendChild(calendarContainer);
 };
 

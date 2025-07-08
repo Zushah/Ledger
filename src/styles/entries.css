@@ -1,0 +1,86 @@
+#entry-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: linear-gradient(120deg, #232323 80%, #2d2d1a 100%);
+    border-radius: 24px;
+    padding: 40px 40px 44px 40px;
+    box-shadow: 0 8px 48px 0 #ffe06633, 0 2px 0 #ffe06633;
+    margin-bottom: 48px;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #ffe06633;
+    animation: fade-in 1.2s cubic-bezier(0.4, 2, 0.6, 1);
+    transition: box-shadow 0.4s cubic-bezier(0.4, 2, 0.6, 1), border 0.4s;
+}
+
+#entry-form {
+    flex-wrap: wrap;
+    gap: 0 24px;
+    justify-content: center;
+}
+
+#entry-form label {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2px;
+    font-size: 1em;
+    color: #ffe066;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 0 #181818, 0 0 8px #ffb30044;
+}
+
+#entry-form input[type="date"], #entry-form input[type="time"] {
+    display: block;
+    margin: 0 auto 12px auto;
+    text-align: center;
+    width: 140px;
+    min-width: 100px;
+    background: linear-gradient(90deg, #232323 60%, #2d2d1a 100%);
+    color: #ffe066;
+    border: 2px solid #ffe06622;
+    padding: 12px 18px;
+    box-shadow: 0 2px 16px #ffe06611;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: border 0.2s, box-shadow 0.2s, background 0.3s;
+}
+
+#entry-form input[type="date"]:focus, #entry-form input[type="time"]:focus {
+    border: 2px solid #ffe066;
+    box-shadow: 0 0 16px #ffe06688;
+    background: linear-gradient(90deg, #2d2d1a 60%, #232323 100%);
+}
+
+#entry-form label, #entry-form input[type="date"], #entry-form input[type="time"] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#entry-form .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0;
+    min-width: 140px;
+}
+
+#entry-form button[type="submit"] {
+    display: block;
+    margin: 18px auto 0 auto;
+}
+
+#selected-activity {
+    margin-bottom: 18px;
+    font-size: 1.3em;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-align: center;
+    color: #ffe066;
+    text-shadow: 0 2px 16px #ffe06633;
+    transition: color 0.3s, text-shadow 0.3s;
+}

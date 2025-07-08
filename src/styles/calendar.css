@@ -1,0 +1,145 @@
+#year-buttons {
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    animation: fade-in 1.2s 0.5s backwards cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+.year-btn {
+    background: linear-gradient(90deg, #232323 60%, #2d2d1a 100%);
+    color: #ffe066;
+    border: 2px solid #ffe06688;
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-size: 1.08em;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px #ffe06611;
+    transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.year-btn.active, .year-btn:hover {
+    background: linear-gradient(90deg, #ffe066 60%, #ffb300 100%);
+    color: #181818;
+    border: 2px solid #ffe066;
+    box-shadow: 0 4px 16px #ffe06633;
+    transform: scale(1.08);
+}
+
+#calendar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.calendar-container {
+    display: grid;
+    grid-template-areas: ". months" "weekdays grid";
+    grid-template-columns: auto 1fr;
+    gap: 4px 8px;
+    align-items: end;
+    justify-items: start;
+}
+
+.calendar-months {
+    grid-area: months;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 30px;
+    gap: 0;
+    padding-bottom: 4px;
+}
+
+.calendar-month-label {
+    height: 16px;
+    font-size: 0.9em;
+    text-align: left;
+    color: #ffe066;
+    white-space: nowrap;
+    grid-column-end: span 4;
+}
+
+.calendar-grid-area {
+    grid-area: grid;
+    display: contents;
+}
+
+.calendar-weekdays {
+    grid-area: weekdays;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 26px;
+}
+
+.calendar-weekday-label {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8em;
+    color: #ffe06699;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-grid {
+    grid-area: grid;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.calendar-week {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.calendar-day {
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #444 60%, #232323 100%);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: background 0.25s, box-shadow 0.25s, border 0.25s, transform 0.25s;
+    border: 2px solid #232323;
+    position: relative;
+    animation: pop-in 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+.calendar-day:hover {
+    box-shadow: 0 0 0 4px #ffe066cc, 0 2px 16px #ffe06633;
+    z-index: 2;
+    border: 2px solid #ffe066;
+    transform: scale(1.18) rotate(-3deg);
+    background: linear-gradient(135deg, #ffe066 60%, #ffb300 100%);
+    color: #181818;
+}
+
+.calendar-day[style*="background: rgb(66, 135"] {
+    background: linear-gradient(135deg, #ffe066 60%, #ffb300 100%) !important;
+    color: #181818;
+    border: 2px solid #ffe066;
+    box-shadow: 0 2px 16px #ffe06644;
+    animation: pop-in 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+#calendar-tooltip {
+    box-shadow: 0 2px 32px #ffe06644;
+    background: linear-gradient(120deg, #232323 80%, #2d2d1a 100%);
+    color: #ffe066;
+    border: 2px solid #ffe066;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 1.08em;
+    pointer-events: none;
+    z-index: 10;
+    text-align: center;
+    opacity: 0.98;
+    transition: opacity 0.2s, box-shadow 0.3s;
+    animation: fade-in 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+    backdrop-filter: blur(2px);
+}

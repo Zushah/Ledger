@@ -59,11 +59,12 @@ const handleEntryFormSubmit = (e) => {
     const date = document.getElementById("date").value;
     const start = document.getElementById("start-time").value;
     const end = document.getElementById("end-time").value;
+    const note = document.getElementById("note").value.trim();
     const [sh, sm] = start.split(":").map(Number);
     const [eh, em] = end.split(":").map(Number);
     let hours = (eh + em / 60) - (sh + sm / 60);
     if (hours < 0) hours += 24;
-    activities[selectedActivity].entries.push({ date, start, end, hours: hours.toFixed(2) });
+    activities[selectedActivity].entries.push({ date, start, end, hours: hours.toFixed(2), note });
     saveActivities();
     renderEntries();
     elements.entryForm.reset();
@@ -159,9 +160,7 @@ const renderEntries = () => {
     weekdays.forEach((day, i) => {
         const labelDiv = document.createElement("div");
         labelDiv.className = "calendar-weekday-label";
-        if ([1, 3, 5].includes(i)) {
-            labelDiv.textContent = day;
-        }
+        if ([1, 3, 5].includes(i)) labelDiv.textContent = day;
         weekdayLabelsDiv.appendChild(labelDiv);
     });
     calendarGridArea.appendChild(weekdayLabelsDiv);
@@ -177,14 +176,14 @@ const renderEntries = () => {
                 const dateStr = day.toISOString().slice(0, 10);
                 const dayEntries = dateMap[dateStr] || [];
                 let totalHours = 0;
-                dayEntries.forEach(e => totalHours += parseFloat(e.hours));
+                dayEntries.forEach((e) => totalHours += parseFloat(e.hours));
                 if (dayEntries.length > 0) {
                     let intensity = Math.min(1, totalHours / 8);
                     let blue = Math.floor(200 + 55 * intensity);
                     dayDiv.style.background = `rgb(66, 135, ${blue})`;
                     dayDiv.style.cursor = "pointer";
                     dayDiv.onmouseenter = (evt) => {
-                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` + dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hrs)`).join("<br>");
+                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` + dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hrs)${e.note ? `<br><i>${e.note}</i>` : ""}`).join("<br>");
                         elements.tooltip.style.display = "block";
                         elements.tooltip.style.left = (evt.pageX + 10) + "px";
                         elements.tooltip.style.top = (evt.pageY - 10) + "px";

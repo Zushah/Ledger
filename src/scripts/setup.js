@@ -7,6 +7,14 @@ const elements = {
     entryForm: $("entry-form"),
     entrySection: $("entry-section"),
     selectedActivityTitle: $("selected-activity"),
+    stats: {
+        total: $("stats-total"),
+        year: $("stats-year"),
+        month: $("stats-month"),
+        week: $("stats-week"),
+        day: $("stats-day"),
+        avg: $("stats-avg")
+    },
     tooltip: $("calendar-tooltip"),
     yearButtonsDiv: $("year-buttons")
 };

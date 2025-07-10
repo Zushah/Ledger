@@ -42,9 +42,39 @@ https://www.github.com/Zushah/Ledger
             <div id="year-buttons" style="margin: 10px 0;"></div>
             <div id="calendar"></div>
             <div id="calendar-tooltip" style="display:none;position:absolute;pointer-events:none;z-index:10;background:#fff;border:1px solid #ccc;padding:6px;border-radius:4px;font-size:0.9em;"></div>
+            <div id="stats-section">
+                <h3>Statistics</h3>
+                <div id="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Total</div>
+                        <div id="stats-total" class="stat-value">0.00 hrs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">This Year</div>
+                        <div id="stats-year" class="stat-value">0.00 hrs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">This Month</div>
+                        <div id="stats-month" class="stat-value">0.00 hrs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">This Week</div>
+                        <div id="stats-week" class="stat-value">0.00 hrs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Today</div>
+                        <div id="stats-day" class="stat-value">0.00 hrs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Daily Average</div>
+                        <div id="stats-avg" class="stat-value">0.00 hrs</div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type="text/javascript" src="./src/scripts/setup.js"></script>
         <script type="text/javascript" src="./src/scripts/handlers.js"></script>
+        <script type="text/javascript" src="./src/scripts/stats.js"></script>
         <script type="text/javascript" src="./src/scripts/main.js"></script>
     </body>
 </html>

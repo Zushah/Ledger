@@ -214,6 +214,7 @@ const renderEntries = () => {
     calendarGridArea.appendChild(grid);
     calendarContainer.appendChild(calendarGridArea);
     elements.calendar.appendChild(calendarContainer);
+    updateStats();
 };
 
 const deleteEntry = (idx) => {

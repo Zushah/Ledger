@@ -183,7 +183,7 @@ const renderEntries = () => {
                     dayDiv.style.background = `rgb(66, 135, ${blue})`;
                     dayDiv.style.cursor = "pointer";
                     dayDiv.onmouseenter = (evt) => {
-                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` + dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hrs)${e.note ? `<br><i>${e.note}</i>` : ""}`).join("<br>");
+                        elements.tooltip.innerHTML = `<strong>${dateStr}</strong><br>` + dayEntries.map((e) => `${e.start} - ${e.end} (${e.hours} hours)${e.note ? `<br><i>${e.note}</i>` : ""}`).join("<br>");
                         elements.tooltip.style.display = "block";
                         elements.tooltip.style.left = (evt.pageX + 10) + "px";
                         elements.tooltip.style.top = (evt.pageY - 10) + "px";

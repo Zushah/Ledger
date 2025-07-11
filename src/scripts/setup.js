@@ -13,7 +13,13 @@ const elements = {
         month: $("stats-month"),
         week: $("stats-week"),
         day: $("stats-day"),
-        avg: $("stats-avg")
+        dailyAvg: $("stats-avg"),
+        weeklyAvg: $("stats-weekly-avg"),
+        monthlyAvg: $("stats-monthly-avg"),
+        currentStreak: $("stats-current-streak"),
+        bestStreak: $("stats-best-streak"),
+        bestDay: $("stats-best-day"),
+        bestWeek: $("stats-best-week")
     },
     tooltip: $("calendar-tooltip"),
     yearButtonsDiv: $("year-buttons")

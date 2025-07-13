@@ -25,6 +25,11 @@ const selectActivity = (idx) => {
     selectedActivity = idx;
     elements.entrySection.style.display = "block";
     elements.selectedActivityTitle.textContent = activities[idx].name;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    document.getElementById("date").value = `${year}-${month}-${day}`;
     selectedYear = null;
     renderEntries();
 };
@@ -68,6 +73,11 @@ const handleEntryFormSubmit = (e) => {
     saveActivities();
     renderEntries();
     elements.entryForm.reset();
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    document.getElementById("date").value = `${year}-${month}-${day}`;
 };
 
 const getAllEntryYears = () => {

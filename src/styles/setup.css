@@ -29,6 +29,22 @@ body {
     transition: background 0.7s cubic-bezier(0.4, 2, 0.6, 1);
 }
 
+.github-link {
+    display: block;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.github-link svg {
+    fill: #ffe06688;
+    transition: fill 0.3s ease, transform 0.3s ease;
+}
+
+.github-link:hover svg {
+    fill: #ffe066;
+    transform: scale(1.1) rotate(5deg);
+}
+
 h1 {
     font-size: 3.2rem;
     font-weight: 900;

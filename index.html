@@ -18,6 +18,10 @@ https://www.github.com/Zushah/Ledger
             <button type="submit">Add Activity</button>
         </form>
         <div id="activities"></div>
+        <div id="data" style="display: flex; justify-content: center; gap: 16px; margin-bottom: 28px; animation: fade-in 1.2s 0.5s backwards cubic-bezier(0.4, 2, 0.6, 1);">
+            <button id="export-btn">Export Data</button>
+            <label for="import-file" class="button-like-label">Import Data<input type="file" id="import-file" accept=".json" style="display: none;"></label>
+        </div>
         <div id="entry-section" style="display:none;">
             <h2 id="selected-activity"></h2>
             <form id="entry-form">

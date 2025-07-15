@@ -5,11 +5,12 @@ const saveActivities = () => {
 const renderActivities = () => {
     elements.activitiesDiv.innerHTML = "";
     activities.forEach((activity, idx) => {
+        const totalHours = activity.entries.reduce((sum, entry) => sum + parseFloat(entry.hours), 0);
         const container = document.createElement("div");
         container.style.display = "flex";
         const btn = document.createElement("button");
         btn.className = "activity-btn";
-        btn.textContent = activity.name;
+        btn.innerHTML = `${activity.name} <span class="activity-hours">${totalHours.toFixed(2)}</span>`;
         btn.onclick = () => selectActivity(idx);
         const deleteBtn = document.createElement("button");
         deleteBtn.className = "delete-activity-btn";

@@ -10,6 +10,11 @@
     100% { text-shadow: 0 0 64px #ffe066cc, 0 4px 48px #ffe06677, 0 2px 0 #181818, 0 0 24px #ffb300cc; }
 }
 
+@keyframes logo-glow {
+    0% { filter: drop-shadow(0 0 10px #ffe06699) drop-shadow(0 0 20px #ffb30088); }
+    100% { filter: drop-shadow(0 0 20px #ffe066cc) drop-shadow(0 0 35px #ffb300cc); }
+}
+
 @keyframes pop-in {
     from { opacity: 0; transform: scale(0.7);}
     to { opacity: 1; transform: scale(1);}
@@ -59,6 +64,14 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: title-glow 2.5s infinite alternate cubic-bezier(0.4, 2, 0.6, 1);
+}
+
+#logo {
+    width: 100px;
+    height: 100px;
+    margin-top: -10px;
+    margin-bottom: 24px;
+    animation: logo-glow 2.5s infinite alternate cubic-bezier(0.4, 2, 0.6, 1);
 }
 
 h2 {

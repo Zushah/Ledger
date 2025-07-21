@@ -19,7 +19,10 @@ const elements = {
         currentStreak: $("stats-current-streak"),
         bestStreak: $("stats-best-streak"),
         bestDay: $("stats-best-day"),
-        bestWeek: $("stats-best-week")
+        bestWeek: $("stats-best-week"),
+        bestMonth: $("stats-best-month"),
+        bestYear: $("stats-best-year"),
+        busiestWeekday: $("stats-busiest-weekday")
     },
     tooltip: $("calendar-tooltip"),
     yearButtonsDiv: $("year-buttons")

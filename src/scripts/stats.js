@@ -18,6 +18,8 @@ const updateStats = () => {
     const dailyHours = {};
     const weeklyHours = {};
     const monthlyHours = {};
+    const yearlyHours = {};
+    const weekdayHours = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
     entries.forEach((entry) => {
         const entryHours = parseFloat(entry.hours);
         total += entryHours;
@@ -30,6 +32,9 @@ const updateStats = () => {
         weeklyHours[weekKey] = (weeklyHours[weekKey] || 0) + entryHours;
         const monthKey = entry.date.slice(0, 7);
         monthlyHours[monthKey] = (monthlyHours[monthKey] || 0) + entryHours;
+        const yearKey = entry.date.slice(0, 4);
+        yearlyHours[yearKey] = (yearlyHours[yearKey] || 0) + entryHours;
+        weekdayHours[entryDate.getUTCDay()] += entryHours;
         if (entryDate.getUTCFullYear() === currentYear) {
             yearTotal += entryHours;
             if (entryDate.getUTCMonth() === currentMonth) {
@@ -87,6 +92,24 @@ const updateStats = () => {
             bestWeek = { date, hours: weeklyHours[date] };
         }
     }
+    let bestMonth = { date: null, hours: 0 };
+    for (const date in monthlyHours) {
+        if (monthlyHours[date] > bestMonth.hours) {
+            bestMonth = { date, hours: monthlyHours[date] };
+        }
+    }
+    let bestYear = { date: null, hours: 0 };
+    for (const date in yearlyHours) {
+        if (yearlyHours[date] > bestYear.hours) {
+            bestYear = { date, hours: yearlyHours[date] };
+        }
+    }
+    let busiestWeekday = { day: null, hours: -1 };
+    for (const day in weekdayHours) {
+        if (weekdayHours[day] > busiestWeekday.hours) {
+            busiestWeekday = { day, hours: weekdayHours[day] };
+        }
+    }
     elements.stats.total.textContent = formatHours(total);
     elements.stats.year.textContent = formatHours(yearTotal);
     elements.stats.month.textContent = formatHours(monthTotal);
@@ -100,27 +123,44 @@ const updateStats = () => {
         const formattedDate = d.toLocaleDateString(undefined, { month: "2-digit", day: "2-digit", year: "numeric" });
         elements.stats.currentStreak.innerHTML = `${currentStreak} days<br><small>(${formattedDate})</small>`;
     } else {
-        elements.stats.currentStreak.textContent = `0 days`;
+        elements.stats.currentStreak.textContent = "0 days";
     }
     if (bestStreak > 0) {
         const d = new Date(bestStreakStartDate + "T00:00:00");
         const formattedDate = d.toLocaleDateString(undefined, { month: "2-digit", day: "2-digit", year: "numeric" });
         elements.stats.bestStreak.innerHTML = `${bestStreak} days<br><small>(${formattedDate})</small>`;
     } else {
-        elements.stats.bestStreak.textContent = "N/A";
+        elements.stats.bestStreak.textContent = "0.00 hours";
     }
     if (bestDay.date) {
         const d = new Date(bestDay.date + "T00:00:00");
         const formattedDate = d.toLocaleDateString(undefined, { month: "2-digit", day: "2-digit", year: "numeric" });
         elements.stats.bestDay.innerHTML = `${formatHours(bestDay.hours)}<br><small>(${formattedDate})</small>`;
     } else {
-        elements.stats.bestDay.textContent = "N/A";
+        elements.stats.bestDay.textContent = "0.00 hours";
     }
     if (bestWeek.date) {
         const d = new Date(bestWeek.date + "T00:00:00");
         const formattedDate = d.toLocaleDateString(undefined, { month: "2-digit", day: "2-digit", year: "numeric" });
         elements.stats.bestWeek.innerHTML = `${formatHours(bestWeek.hours)}<br><small>(${formattedDate})</small>`;
     } else {
-        elements.stats.bestWeek.textContent = "N/A";
+        elements.stats.bestWeek.textContent = "0.00 hours";
+    }
+    if (bestMonth.date) {
+        const [year, month] = bestMonth.date.split("-");
+        elements.stats.bestMonth.innerHTML = `${formatHours(bestMonth.hours)}<br><small>(${month}/${year})</small>`;
+    } else {
+        elements.stats.bestMonth.textContent = "0.00 hours";
+    }
+    if (bestYear.date) {
+        elements.stats.bestYear.innerHTML = `${formatHours(bestYear.hours)}<br><small>(${bestYear.date})</small>`;
+    } else {
+        elements.stats.bestYear.textContent = "0.00 hours";
+    }
+    if (busiestWeekday.day !== null && busiestWeekday.hours > 0) {
+        const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        elements.stats.busiestWeekday.innerHTML = `${formatHours(busiestWeekday.hours)}<br><small>(${weekdays[busiestWeekday.day]})</small>`;
+    } else {
+        elements.stats.busiestWeekday.textContent = "0.00 hours";
     }
 };
